@@ -278,7 +278,7 @@ def receive_data():
 
 @app.route('/data', methods=['GET'])
 def get_data():
-    readings = SensorReading.query.order_by(SensorReading.timestamp.desc()).limit(100).all()
+    readings = SensorReading.query.order_by(SensorReading.timestamp.asc()).limit(100).all()
     return jsonify([{
         'time': reading.timestamp.strftime('%H:%M:%S'),
         'tds': reading.tds,
