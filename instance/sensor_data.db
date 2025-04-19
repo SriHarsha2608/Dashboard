@@ -1,0 +1,9 @@
+-- Schema (auto-created by SQLAlchemy)
+CREATE TABLE sensor_reading (
+    id INTEGER PRIMARY KEY,
+    timestamp DATETIME,
+    tds FLOAT,
+    turbidity FLOAT,
+    ph FLOAT,
+    temperature FLOAT
+);

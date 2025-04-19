@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Water Quality Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🌊 Live Water Quality Dashboard</h1>
+        <div class="data-box">
+            <p><strong>TDS:</strong> <span id="tds">--</span> ppm</p>
+            <p><strong>Turbidity:</strong> <span id="turbidity">--</span> NTU</p>
+            <p><strong>pH:</strong> <span id="ph">--</span></p>
+            <p><strong>Temperature:</strong> <span id="temperature">--</span> °C</p>
+        </div>
+
+        <div class="chart-grid">
+            <div class="chart-card">
+                <canvas id="tdsChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="turbidityChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="phChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="temperatureChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
