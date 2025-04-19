@@ -1,33 +1,3 @@
-// const tdsCtx = document.getElementById('tdsChart').getContext('2d');
-// const turbidityCtx = document.getElementById('turbidityChart').getContext('2d');
-// const phCtx = document.getElementById('phChart').getContext('2d');
-// const tempCtx = document.getElementById('temperatureChart').getContext('2d');
-
-// const tdsChart = new Chart(tdsCtx, {
-//     type: 'line',
-//     data: { labels: [], datasets: [{ label: 'TDS (ppm)', data: [], borderColor: 'blue', fill: false }] },
-//     options: { responsive: true }
-// });
-
-// const turbidityChart = new Chart(turbidityCtx, {
-//     type: 'line',
-//     data: { labels: [], datasets: [{ label: 'Turbidity (NTU)', data: [], borderColor: 'green', fill: false }] },
-//     options: { responsive: true }
-// });
-
-// const phChart = new Chart(phCtx, {
-//     type: 'line',
-//     data: { labels: [], datasets: [{ label: 'pH', data: [], borderColor: 'orange', fill: false }] },
-//     options: { responsive: true }
-// });
-
-// const tempChart = new Chart(tempCtx, {
-//     type: 'line',
-//     data: { labels: [], datasets: [{ label: 'Temperature (°C)', data: [], borderColor: 'red', fill: false }] },
-//     options: { responsive: true }
-// });
-
-
 const tdsCtx = document.getElementById('tdsChart').getContext('2d');
 const turbidityCtx = document.getElementById('turbidityChart').getContext('2d');
 const phCtx = document.getElementById('phChart').getContext('2d');
@@ -114,13 +84,13 @@ async function fetchData() {
         const labels = data.map(entry => entry.time);
         const lastEntry = data.length > 0 ? data[data.length - 1] : null;
 
-        // Update charts
+       
         updateChart(tdsChart, labels, data.map(entry => entry.tds));
         updateChart(turbidityChart, labels, data.map(entry => entry.turbidity));
         updateChart(phChart, labels, data.map(entry => entry.ph));
         updateChart(tempChart, labels, data.map(entry => entry.temperature));
 
-        // Update current values
+        
         if (lastEntry) {
             document.getElementById('tds').textContent = lastEntry.tds;
             document.getElementById('turbidity').textContent = lastEntry.turbidity;
@@ -138,7 +108,5 @@ function updateChart(chart, labels, data) {
     chart.update();
 }
 
-// Fetch data every 3 seconds
 setInterval(fetchData, 3000);
-// Initial fetch
 fetchData();
