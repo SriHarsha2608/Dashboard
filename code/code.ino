@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* ssid = "SHA_PC";
-const char* password = "123456789..";
+const char* ssid = "iQOO Neo9 Pro";
+const char* password = "1234567890";
 
 const int turbidityPin = 34;
 const int tdsPin = 35;
@@ -13,7 +13,7 @@ const int redLEDPin = 17;
 const int pHPin = 33;
 
 // Replace with your server's IP and port
-const char* serverUrl = "http://192.168.137.116:5000/data";
+const char* serverUrl = "http://192.168.161.92:5000/data";
 
 void setup() {
   Serial.begin(115200);
