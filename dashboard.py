@@ -64,12 +64,17 @@ with app.app_context():
         print(f"ERROR: Could not create database tables at {db_path}: {e}")
         # exit(1)
 
-# --- Routes (No changes needed in route logic itself) ---
+# --- Routes ---
 @app.route('/')
 def index():
     """Serves the main dashboard HTML page."""
     # print("Serving index.html") # Optional logging
     return render_template('index.html')
+
+@app.route('/history')
+def history():
+    """Serves the history page."""
+    return render_template('history.html')
 
 @app.route('/data', methods=['POST'])
 def receive_data():
@@ -132,6 +137,33 @@ def get_data():
         return jsonify(readings_for_json)
     except Exception as e:
         print(f"ERROR during GET /data processing: {e}")
+        return jsonify({'status': 'error', 'message': f"Internal server error: {str(e)}"}), 500
+
+@app.route('/history/data')
+def get_historical_data():
+    """Sends data for the past 4 days."""
+    try:
+        # Calculate the date 4 days ago from now
+        four_days_ago = get_ist_now() - timedelta(days=4)
+        
+        # Get readings from the past 4 days
+        readings = SensorReading.query.filter(
+            SensorReading.timestamp >= four_days_ago
+        ).order_by(SensorReading.timestamp.desc()).all()
+        
+        # Format the data for JSON response
+        readings_for_json = [{
+            'date': reading.timestamp.strftime('%Y-%m-%d'),
+            'time': reading.timestamp.strftime('%H:%M:%S'),
+            'tds': reading.tds,
+            'turbidity': reading.turbidity,
+            'ph': reading.ph,
+            'temperature': reading.temperature
+        } for reading in readings]
+        
+        return jsonify(readings_for_json)
+    except Exception as e:
+        print(f"ERROR during GET /history/data processing: {e}")
         return jsonify({'status': 'error', 'message': f"Internal server error: {str(e)}"}), 500
 
 @app.route('/export/csv')

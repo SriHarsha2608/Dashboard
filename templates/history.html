@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Water Quality History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🌊 Water Quality History</h1>
+        
+        <!-- Navigation Links -->
+        <div class="navigation">
+            <a href="/" class="nav-link">Live Dashboard</a>
+            <a href="/history" class="nav-link active">History (4 Days)</a>
+        </div>
+        
+        <div class="data-box">
+            <div class="date-selector">
+                <label for="date-select">Select Date:</label>
+                <select id="date-select">
+                    <!-- Populated dynamically by JavaScript -->
+                </select>
+            </div>
+            
+            <div id="day-summary" class="day-summary">
+                <h3>Daily Statistics</h3>
+                <p><strong>Date:</strong> <span id="selected-date">--</span></p>
+                <p><strong>Average TDS:</strong> <span id="avg-tds">--</span> ppm</p>
+                <p><strong>Average Turbidity:</strong> <span id="avg-turbidity">--</span> NTU</p>
+                <p><strong>Average pH:</strong> <span id="avg-ph">--</span></p>
+                <p><strong>Average Temperature:</strong> <span id="avg-temp">--</span> °C</p>
+                <p><strong>Safety Status:</strong> <span id="safety-status">--</span></p>
+            </div>
+        </div>
+
+        <div class="chart-grid">
+            <div class="chart-card full-width">
+                <canvas id="historicalChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="data-table-container">
+            <h3>Detailed Data</h3>
+            <table id="data-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>TDS (ppm)</th>
+                        <th>Turbidity (NTU)</th>
+                        <th>pH</th>
+                        <th>Temperature (°C)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+</body>
+</html>
