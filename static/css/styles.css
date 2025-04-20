@@ -255,3 +255,50 @@ h1 {
         font-size: 0.9rem;
     }
 }
+
+/* Add these styles to your existing styles.css file */
+
+.trend-alert {
+    background-color: #ff9800;  /* Orange color for trend alerts */
+}
+
+.trend-details {
+    background-color: #fff3e0;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #ff9800;
+    display: none;
+}
+
+.trend-alert-item {
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #fff8e1;
+    border-radius: 4px;
+}
+
+.trend-alert-item:last-child {
+    margin-bottom: 0;
+}
+
+p.trend-warning {
+    border-left: 5px solid #ff9800 !important;
+    background-color: #fff3e0 !important;
+    animation: trend-pulse 2s infinite;
+}
+
+@keyframes trend-pulse {
+    0% { background-color: #fff3e0; }
+    50% { background-color: #ffe0b2; }
+    100% { background-color: #fff3e0; }
+}
+
+/* Adjust the existing alert styles for better distinction */
+.alert-banner {
+    margin-bottom: 10px;
+}
+
+.data-box p {
+    transition: all 0.3s ease;
+}

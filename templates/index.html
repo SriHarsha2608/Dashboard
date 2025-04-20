@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,13 +10,11 @@
     <div class="container">
         <h1>🌊 Live Water Quality Dashboard</h1>
         
-        <!-- Navigation Links -->
         <div class="navigation">
             <a href="/" class="nav-link active">Live Dashboard</a>
             <a href="/history" class="nav-link">History (4 Days)</a>
         </div>
         
-        <!-- Alert Banner -->
         <div id="alert-banner" class="alert-banner">
             ⚠️ Warning: Parameters outside safe range!
         </div>
@@ -44,6 +42,65 @@
         </div>
     </div>
 
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Water Quality Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🌊 Live Water Quality Dashboard</h1>
+        
+        <!-- Navigation Links -->
+        <div class="navigation">
+            <a href="/" class="nav-link active">Live Dashboard</a>
+            <a href="/history" class="nav-link">History (4 Days)</a>
+        </div>
+        
+        <!-- Alert Banners -->
+        <div id="alert-banner" class="alert-banner">
+            ⚠️ Warning: Parameters outside safe range!
+        </div>
+        
+        <div id="trend-alert-banner" class="alert-banner trend-alert">
+            ⚠️ Unusual trends detected!
+        </div>
+        
+        <div id="trend-alert-details" class="trend-details">
+            <!-- Trend details will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="data-box">
+            <p><strong>TDS:</strong> <span id="tds">--</span> ppm</p>
+            <p><strong>Turbidity:</strong> <span id="turbidity">--</span> NTU</p>
+            <p><strong>pH:</strong> <span id="ph">--</span></p>
+            <p><strong>Temperature:</strong> <span id="temperature">--</span> °C</p>
+        </div>
+
+        <div class="chart-grid">
+            <div class="chart-card">
+                <canvas id="tdsChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="turbidityChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="phChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="temperatureChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/trend-analysis.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>
