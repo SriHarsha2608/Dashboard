@@ -1,37 +1,36 @@
-// Define safe range limits
 const safeRanges = {
-    tds: { min: 300, max: 600 },
+    tds: { min: 50, max: 150 },
     turbidity: { min: 0, max: 5 },
     ph: { min: 6.5, max: 7.5 },
-    temperature: { min: 10, max: 35 }
+    temperature: { min: 10, max: 60 }
 };
 
-// Initialize variables
+
 let historicalData = [];
 let dates = [];
 let historicalChart = null;
 
-// Initialize page
+
 document.addEventListener('DOMContentLoaded', async function() {
     await fetchHistoricalData();
     setupDateSelector();
     
-    // Add event listener for date selection
+    
     document.getElementById('date-select').addEventListener('change', function() {
         displaySelectedDateData(this.value);
     });
 });
 
-// Fetch historical data for the last 4 days
+
 async function fetchHistoricalData() {
     try {
         const response = await fetch('/history/data');
         historicalData = await response.json();
         
-        // Extract unique dates
+        
         dates = [...new Set(historicalData.map(item => item.date))];
         
-        // If we have data, display the most recent date by default
+        
         if (dates.length > 0) {
             displaySelectedDateData(dates[0]);
         }
@@ -40,14 +39,14 @@ async function fetchHistoricalData() {
     }
 }
 
-// Set up the date selector dropdown
+
 function setupDateSelector() {
     const dateSelect = document.getElementById('date-select');
     
-    // Clear existing options
+    
     dateSelect.innerHTML = '';
     
-    // Add options for each date
+    
     dates.forEach(date => {
         const option = document.createElement('option');
         option.value = date;
@@ -56,29 +55,29 @@ function setupDateSelector() {
     });
 }
 
-// Display data for the selected date
+
 function displaySelectedDateData(selectedDate) {
-    // Filter data for the selected date
+   
     const dayData = historicalData.filter(item => item.date === selectedDate);
     
     if (dayData.length === 0) return;
     
-    // Update the date display
+    
     document.getElementById('selected-date').textContent = selectedDate;
     
-    // Calculate daily averages
+    
     const avgTds = calculateAverage(dayData, 'tds');
     const avgTurbidity = calculateAverage(dayData, 'turbidity');
     const avgPh = calculateAverage(dayData, 'ph');
     const avgTemp = calculateAverage(dayData, 'temperature');
     
-    // Update summary display
+    
     document.getElementById('avg-tds').textContent = avgTds.toFixed(2);
     document.getElementById('avg-turbidity').textContent = avgTurbidity.toFixed(2);
     document.getElementById('avg-ph').textContent = avgPh.toFixed(2);
     document.getElementById('avg-temp').textContent = avgTemp.toFixed(2);
     
-    // Determine overall safety status
+    
     const isTdsSafe = avgTds >= safeRanges.tds.min && avgTds <= safeRanges.tds.max;
     const isTurbiditySafe = avgTurbidity >= safeRanges.turbidity.min && avgTurbidity <= safeRanges.turbidity.max;
     const isPhSafe = avgPh >= safeRanges.ph.min && avgPh <= safeRanges.ph.max;
@@ -100,20 +99,20 @@ function displaySelectedDateData(selectedDate) {
         safetyStatus.className = "unsafe";
     }
     
-    // Update chart
+    
     updateChart(dayData);
     
-    // Update data table
+    
     updateDataTable(dayData);
 }
 
-// Calculate average for a parameter
+
 function calculateAverage(data, parameter) {
     const sum = data.reduce((acc, item) => acc + item[parameter], 0);
     return sum / data.length;
 }
 
-// Check if all parameters are within safe range
+
 function isDataPointSafe(dataPoint) {
     return (
         dataPoint.tds >= safeRanges.tds.min && 
@@ -127,16 +126,14 @@ function isDataPointSafe(dataPoint) {
     );
 }
 
-// Update historical chart
+
 function updateChart(dayData) {
     const ctx = document.getElementById('historicalChart').getContext('2d');
     
-    // Destroy previous chart if it exists
     if (historicalChart) {
         historicalChart.destroy();
     }
     
-    // Prepare data for the chart
     const labels = dayData.map(item => item.time);
     
     historicalChart = new Chart(ctx, {
@@ -195,7 +192,6 @@ function updateChart(dayData) {
     });
 }
 
-// Update data table
 function updateDataTable(dayData) {
     const tableBody = document.querySelector('#data-table tbody');
     tableBody.innerHTML = '';

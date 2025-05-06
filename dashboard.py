@@ -3,16 +3,13 @@ from flask import Flask, request, jsonify, render_template, Response
 from datetime import datetime, timezone, timedelta
 from flask_sqlalchemy import SQLAlchemy
 
-# Initialize Flask app
-# IMPORTANT: Initialize Flask *before* using app.instance_path
-app = Flask(__name__, instance_relative_config=True) # Use instance_relative_config=True
 
-# --- Configuration ---
-# Get the absolute path to the instance folder
-# Flask automatically determines this based on the app's root path
+app = Flask(__name__, instance_relative_config=True) 
+
+
 instance_path = app.instance_path
 db_path = os.path.join(instance_path, 'sensor_data.db')
-db_uri = 'sqlite:///' + db_path # 3 slashes for relative/absolute path from root
+db_uri = 'sqlite:///' + db_path
 
 print(f"--- Database Configuration ---")
 print(f"Flask Instance Path: {instance_path}")
@@ -20,29 +17,24 @@ print(f"Database file path: {db_path}")
 print(f"Database URI: {db_uri}")
 print(f"-----------------------------")
 
-# Ensure the instance folder exists *before* trying to use it
 try:
     os.makedirs(instance_path, exist_ok=True)
     print(f"Ensured instance folder exists: {instance_path}")
 except OSError as e:
     print(f"ERROR: Could not create instance folder {instance_path}: {e}")
-    # Decide how critical this is. Exit if needed.
-    # exit(1)
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# You could also load other config from instance/config.py if needed
-# app.config.from_pyfile('config.py', silent=True)
+
 
 db = SQLAlchemy(app)
 
-# --- Helper function for IST timestamp ---
 def get_ist_now():
     """Get current datetime in IST (UTC+5:30)"""
     return datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=5, minutes=30)))
 
-# --- Database Model ---
-# Modified to use IST timezone
+
 class SensorReading(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=get_ist_now)
@@ -54,7 +46,6 @@ class SensorReading(db.Model):
     def __repr__(self):
         return f"<SensorReading(id={self.id}, timestamp={self.timestamp}, tds={self.tds})>"
 
-# --- Database Initialization ---
 with app.app_context():
     print("Attempting to create database tables if they don't exist...")
     try:
@@ -64,11 +55,9 @@ with app.app_context():
         print(f"ERROR: Could not create database tables at {db_path}: {e}")
         # exit(1)
 
-# --- Routes ---
 @app.route('/')
 def index():
     """Serves the main dashboard HTML page."""
-    # print("Serving index.html") # Optional logging
     return render_template('index.html')
 
 @app.route('/history')
@@ -94,7 +83,6 @@ def receive_data():
              print(f"ERROR: {msg}")
              return jsonify({'status': 'error', 'message': msg}), 400
 
-        # Using IST timestamp
         new_reading = SensorReading(
             timestamp=get_ist_now(),
             tds=float(content['tds']),
@@ -143,15 +131,12 @@ def get_data():
 def get_historical_data():
     """Sends data for the past 4 days."""
     try:
-        # Calculate the date 4 days ago from now
         four_days_ago = get_ist_now() - timedelta(days=4)
         
-        # Get readings from the past 4 days
         readings = SensorReading.query.filter(
             SensorReading.timestamp >= four_days_ago
         ).order_by(SensorReading.timestamp.desc()).all()
         
-        # Format the data for JSON response
         readings_for_json = [{
             'date': reading.timestamp.strftime('%Y-%m-%d'),
             'time': reading.timestamp.strftime('%H:%M:%S'),
@@ -192,9 +177,6 @@ def export_csv():
         print(f"ERROR during /export/csv processing: {e}")
         return "Error generating CSV file.", 500
 
-# --- Main Execution ---
 if __name__ == '__main__':
     print("Starting Flask development server...")
-    # Now, when debugging, ensure you are checking the file at the path printed above,
-    # which will be inside the 'instance' folder next to your dashboard.py script's location.
     app.run(host='0.0.0.0', port=5000, debug=True)

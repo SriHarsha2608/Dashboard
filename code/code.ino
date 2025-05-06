@@ -81,8 +81,8 @@ void loop() {
     Serial.print(" | pH: ");
     Serial.println(pH, 2);
 
-    bool turbiditySafe = turbidityVoltage >= 2.0 && turbidityVoltage <= 3.0;
-    bool tdsSafe = tds >= 300 && tds <= 600;  // adjusted for a more typical TDS safe range
+    bool turbiditySafe = turbidityNTU <= 5;
+    bool tdsSafe = tds >= 50 && tds <= 150;
     bool pHSafe = pH >= 6.5 && pH <= 7.5;
 
     if (turbiditySafe && tdsSafe && pHSafe) {
@@ -99,21 +99,20 @@ void loop() {
       digitalWrite(buzzerPin, HIGH);
     }
 
-    // Prepare JSON
+    
     String jsonData = "{\"tds\": " + String(tds, 2) + ", \"turbidity\": " + String(turbidityNTU, 2) + ", \"ph\": " + String(pH, 2) + ", \"temperature\": " + String(temperatureC, 2) + "}";
 
     Serial.print("Sending: ");
     Serial.println(jsonData);
 
-    // Send HTTP POST
+    
     int httpResponseCode = http.POST(jsonData);
-    // Serial.print("HTTP Response code: ");
-    // Serial.println(httpResponseCode);
+    
 
     http.end();
   } else {
     Serial.println("WiFi disconnected");
   }
 
-  delay(10000);  // Wait 10 seconds before next loop
+  delay(10000); 
 }

@@ -256,10 +256,9 @@ h1 {
     }
 }
 
-/* Add these styles to your existing styles.css file */
 
 .trend-alert {
-    background-color: #ff9800;  /* Orange color for trend alerts */
+    background-color: #ff9800; 
 }
 
 .trend-details {
@@ -294,7 +293,6 @@ p.trend-warning {
     100% { background-color: #fff3e0; }
 }
 
-/* Adjust the existing alert styles for better distinction */
 .alert-banner {
     margin-bottom: 10px;
 }
