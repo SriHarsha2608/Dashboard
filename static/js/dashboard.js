@@ -4,7 +4,7 @@ const phCtx = document.getElementById('phChart').getContext('2d');
 const tempCtx = document.getElementById('temperatureChart').getContext('2d');
 
 const safeRanges = {
-    tds: { min: 50, max: 150 },
+    tds: { min: 50, max: 500 },
     turbidity: { min: 0, max: 5 }, 
     ph: { min: 6.5, max: 7.5 },
     temperature: { min: 10, max: 60 } 
